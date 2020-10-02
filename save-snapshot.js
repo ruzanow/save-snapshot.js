@@ -12,6 +12,12 @@ javascript: (function () {
     };
     var selWin = getSelWin(window), win = selWin || window, doc = win.document, loc = win.location;
 
+    var saveContent = function (fileContent, fileName) {
+        var link = doc.createElement('a');
+        link.download = fileName;
+        link.href = 'data:text/html;charset=utf-8,' + encodeURIComponent(fileContent);
+        link.click();
+    };
     var qualifyURL = function (url, base) {
         if (!url || /^([a-z]+:|#)/.test(url)) return url;
         var a = doc.createElement('a');
@@ -39,7 +45,7 @@ javascript: (function () {
                 canvas.getContext('2d').drawImage(img, 0, 0);
                 ret = canvas.toDataURL((/\.jpe?g/i.test(src) ? 'image/jpeg' : 'image/png'));
             } catch (e) {};
-            if (img != obj) img.src = 'about:blank';
+            if (img != obj) img.src = '';
         };
         return ret;
     };
@@ -67,7 +73,7 @@ javascript: (function () {
         };
 
         switch (Object.prototype.toString.call(obj).slice(8, -1)) {
-            case 'Array': return arrToSrc(obj);
+            case 'Array': return obj.length < 1000 ? arrToSrc(obj) : '[]';
             case 'Boolean':
             case 'Function':
             case 'RegExp': return obj.toString();
@@ -137,7 +143,7 @@ javascript: (function () {
         // ignore jquery
         if ('$' in win) return;
         var f = doc.createElement('iframe');
-        f.src = 'about:blank';
+        f.src = '';
         f.setAttribute('style', 'position:fixed;left:0;top:0;visibility:hidden;width:0;height:0;');
         doc.documentElement.appendChild(f);
         var str, script = doc.createElement('script');
@@ -175,7 +181,10 @@ javascript: (function () {
                 }
             }
         } catch(e) {
-            if (s.ownerNode) style = s.ownerNode.cloneNode(false);
+            if (s.ownerNode) {
+                    style = s.ownerNode.cloneNode(false);
+                    if (style.href) style.href = style.href;
+            }
         };
         this.appendChild(style);
     };
@@ -190,6 +199,7 @@ javascript: (function () {
         if (dt.systemId) doctype += ' \x22' + dt.systemId + '\x22';
         doctype += '>\n';
     };
-    // save the page
-    loc.href = 'data:text/phf;charset=utf-8,' + encodeURIComponent(doctype + sel.innerHTML + '\n<!-- This document saved from ' + (loc.protocol != 'data:' ? loc.href : 'data:uri') + ' -->')
+    // save the page	
+    saveContent(doctype + sel.innerHTML + '\n<!-- This document saved from ' + (loc.protocol != 'data:' ? loc.href : 'data:uri') + ' -->', (doc.title || 'untitled') + '.html');
+
 })();
