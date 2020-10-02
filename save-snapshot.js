@@ -49,6 +49,7 @@ javascript: (function () {
         };
         return ret;
     };
+/*
     var toSrc = function (obj) {
         var strToSrc = function (str) {
             var chr, ret = '', i = 0, meta = {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '\x22' : '\\\x22', '\\': '\\\\'};
@@ -85,7 +86,7 @@ javascript: (function () {
             default: return obj ? (obj.nodeType == 1 && obj.id ? 'document.getElementById(' + strToSrc(obj.id) + ')' : '{}') : 'null';
         }
     };
-
+*/
     // clone selection or body
     var ele, pEle, clone, reUrl = /(url\(\x22?)(.+?)(\x22?\))/g;
     if (selWin) {
@@ -138,7 +139,7 @@ javascript: (function () {
     head.appendChild(meta);
     var title = doc.getElementsByTagName('title')[0];
     if (title) head.appendChild(title.cloneNode(true));
-
+/*
     head.copyScript = function () {
         // ignore jquery
         if ('$' in win) return;
@@ -162,7 +163,7 @@ javascript: (function () {
         if (script.childNodes.length) this.nextSibling.appendChild(script);
     };
     head.copyScript();
-
+*/
     head.copyStyle = function (s) {
         if (!s) return;
         var style = doc.createElement('style');
@@ -183,6 +184,7 @@ javascript: (function () {
         } catch(e) {
             if (s.ownerNode) {
                     style = s.ownerNode.cloneNode(false);
+					// qualify URL
                     if (style.href) style.href = style.href;
             }
         };
