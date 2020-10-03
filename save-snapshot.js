@@ -128,6 +128,7 @@ javascript: (function () {
             case 'iframe': if (el.hasAttribute('src')) el.src = el.src; break;
             case 'object': if (el.hasAttribute('data')) el.data = el.data; break;
             case 'form': if (el.hasAttribute('action')) el.action = el.action; break;
+            case 'textarea': el.innerHTML = el.value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); break;
         }
     };
 
@@ -184,7 +185,7 @@ javascript: (function () {
         } catch(e) {
             if (s.ownerNode) {
                     style = s.ownerNode.cloneNode(false);
-					// qualify URL
+                    // qualify URL
                     if (style.href) style.href = style.href;
             }
         };
