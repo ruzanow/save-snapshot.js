@@ -119,7 +119,7 @@ javascript: (function () {
             case 'script': el.parentNode.removeChild(el); break;
             case 'a': 
             case 'area': if (el.hasAttribute('href') && el.getAttribute('href').charAt(0) != '#') el.href = el.href; break;
-            case 'img':
+            case 'img': if (el.hasAttribute('src')) {el.src = encodeImg(el.src, el); if (el.hasAttribute('srcset')) el.removeAttribute('srcset')}; break;
             case 'input': if (el.hasAttribute('src')) el.src = encodeImg(el.src, el); break;
             case 'audio':
             case 'video':
